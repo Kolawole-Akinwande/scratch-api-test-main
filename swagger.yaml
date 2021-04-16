@@ -1,0 +1,54 @@
+swagger: "2.0"
+info:
+  title: User API
+  description: A Very Simple User API
+  version: 1.0.0
+host: example.com
+basePath: /v1
+schemes:
+  - https
+paths:
+  /users:
+    get:
+      summary: Returns a List of Users.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Creates a New User.
+      parameters:
+        - in: body
+          name: user
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+  /users/{userId}:
+    get:
+      summary: Returns a User by ID.
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          type: integer
+          minimum: 1
+          description: ID of the User to Fetch
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+definitions:
+  User:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    # Both properties are required
+    required:
+      - id
+      - name
