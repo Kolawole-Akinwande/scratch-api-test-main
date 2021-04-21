@@ -3,7 +3,7 @@ pipeline {
     environment {
         COMMIT = sh(returnStdout: true, script: "git rev-parse HEAD").trim()
         TAG = "${env.BRANCH_NAME == 'master' ? 'production' : 'dev'}-${env.COMMIT}"
-        ENVIRONMENT = "${env.BRANCH_NAME == 'master' ? 'staging' : 'development'}"   
+        ENVIRONMENT = "${env.BRANCH_NAME == 'master' ? 'staging' : 'development'}"
     }
 
     stages {
@@ -107,7 +107,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github_cred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh "git tag ${TAG}"
-                    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/wizeline/sre-wizeline-akinwande-kolawole.git ${TAG}"
+//                     sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/wizeline/sre-wizeline-akinwande-kolawole.git ${TAG}"
                 }
                 kubeDeploy(environment: "${env.PRODUCTION}")
             }
@@ -126,8 +126,8 @@ pipeline {
 def kubeDeploy(Map map) {
     withCredentials([file(credentialsId: 'KUBECONFIG2', variable: 'KUBECONFIG')]) {
         // some block
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} set image deployment/scratch-api-test scratch-api-test=kolsdej/scratch-api-test:${TAG}"
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout status deployment/scratch-api-test --timeout=120s"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=default set image deployment/scratch-api-test scratch-api-test=kolsdej/scratch-api-test:${TAG}"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=default rollout status deployment/scratch-api-test --timeout=120s"
         echo "Deployed to ${map.environment}"
     }
         
@@ -135,6 +135,6 @@ def kubeDeploy(Map map) {
 
 def kubeRollback(Map map) {
     withCredentials([file(credentialsId: 'KUBECONFIG2', variable: 'KUBECONFIG')]) {
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout undo deployment/scratch-api-test"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=default rollout undo deployment/scratch-api-test"
     }
 }
