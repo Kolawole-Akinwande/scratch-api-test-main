@@ -16,10 +16,8 @@ pipeline {
                     steps {
                         
                         echo "Building docker image ${TAG}"
-                        dir('scratch-api-test'){
-                            sh 'docker build -t scratch-api:${TAG} .'
-                        }
-                        
+                        sh 'docker build -t scratch-api:${TAG} .'
+
                     }
                     post {
                         success {
@@ -40,11 +38,9 @@ pipeline {
                         }
                     }
                     steps {
-                        dir('scratch-api-test'){
-                            sh 'python -m unittest discover scratch/tests'
-                            withEnv(['PYLINTHOME=.']) {
-                                sh "pylint --output-format=parseable --exit-zero  --reports=no *.py"
-                            }
+                        sh 'python -m unittest discover scratch/tests'
+                        withEnv(['PYLINTHOME=.']) {
+                            sh "pylint --output-format=parseable --exit-zero  --reports=no *.py"
                         }
                     }
                     post {
