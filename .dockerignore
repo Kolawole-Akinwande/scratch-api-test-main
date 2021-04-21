@@ -1,0 +1,7 @@
+__pycache__/
+scratch-api-test/
+db.sqlite
+Dockerfile
+Jenkinsfile
+db/
+deployment.yaml

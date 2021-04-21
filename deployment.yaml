@@ -17,10 +17,10 @@ spec:
       dnsPolicy: Default
       containers:
       - name: scratch-api-test
-        image: scratch-api-test
-        envFrom:
-          - secretRef:
-              name: scratch-api-test-readonly #environment variables should be created in secrets
+        image: kolsdej/scratch-api-test
+#        envFrom:
+#          - secretRef:
+#              name: scratch-api-test-readonly #environment variables should be created in secrets
         ports:
         - containerPort: 5000
         livenessProbe:

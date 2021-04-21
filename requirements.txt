@@ -3,3 +3,4 @@ Flask-SQLAlchemy==2.5
 Werkzeug==0.16.1
 pymysql
 cryptography
+pylint

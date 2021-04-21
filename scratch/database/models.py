@@ -3,7 +3,7 @@ from scratch.database import db
 
 class Users(db.Model):
     __bind_key__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, index=True)
     name = db.Column(db.String(80))
 
     def __init__(self, id, name):
