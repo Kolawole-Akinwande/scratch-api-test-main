@@ -23,3 +23,26 @@ This step is to test your understanding of containerization, automation and orch
 Please containerize your application and create the required manifests/configuration to deploy your application to a Kubernetes cluster. Please use best practices when setting this up (treat it as if it were going into production). Part of the process should include the automation of loading the data into the storage that you have chosen.
 
 _NB:_ Scratchpay is a Fintech company, so while we believe in innovation, this should not be at the cost of compromising on security.
+
+## Local Setup
+# Docker
+    TO run the app using docker, please ensure you have docker-compose installed.
+    in the docker-compose.yml directory, run 'docker-compose up'
+# to build the docker image
+    in the Dockerfile directory, run docker 'build -t scratch-api-test .'
+## TO develop
+#Windows
+Please make sure you have python3 or py installed and in your PATH
+in the root of the code directory, 
+1. python3 -m pip install virtualenv
+2. py -m venv env
+3. .\env\Scripts\activate
+4. pip install -r requirements.txt
+
+#Linux/macOS
+Please make sure you have python3 or py installed and in your PATH
+in the root of the code directory, 
+1. python3 -m pip install virtualenv
+2. python3 -m venv env
+3. source env/bin/activate
+4. pip install -r requirements.txt
