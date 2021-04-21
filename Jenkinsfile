@@ -124,7 +124,7 @@ pipeline {
     }
 }
 def kubeDeploy(Map map) {
-    withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
+    withCredentials([file(credentialsId: 'KUBECONFIG2', variable: 'KUBECONFIG')]) {
         // some block
         sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} set image deployment/scratch-api-test scratch-api-test=kolsdej/scratch-api-test:${TAG}"
         sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout status deployment/scratch-api-test --timeout=120s"
@@ -134,7 +134,7 @@ def kubeDeploy(Map map) {
 }
 
 def kubeRollback(Map map) {
-    withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
+    withCredentials([file(credentialsId: 'KUBECONFIG2', variable: 'KUBECONFIG')]) {
         sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout undo deployment/scratch-api-test"
     }
 }
