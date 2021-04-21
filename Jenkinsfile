@@ -16,14 +16,14 @@ pipeline {
                     steps {
                         
                         echo "Building docker image ${TAG}"
-                        sh 'docker build -t scratch-api:${TAG} .'
+                        sh 'docker build -t kolsdej/scratch-api-test:${TAG} .'
 
                     }
                     post {
                         success {
                             echo '\u2705 Build Succeeded, pushing image to registry...'
-                            sh 'docker push scratch-api:${TAG}'
-                            sh 'docker rmi scratch-api:${TAG}'
+                            sh 'docker push kolsdej/scratch-api-test:${TAG}'
+                            sh 'docker rmi kolsdej/scratch-api-test:${TAG}'
                             
                         }
                         failure {
@@ -33,7 +33,7 @@ pipeline {
                 }
                 stage('test') {
                     agent {docker {
-                        image 'eeacms/pylint:latest'
+                        image 'kolsdej/scratch-api-test:latest'
                         args '-v /tmp:/tmp'
                         }
                     }
@@ -126,8 +126,8 @@ pipeline {
 def kubeDeploy(Map map) {
     withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
         // some block
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} set image deployment/api api=wizelinedevops/api:${TAG}"
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout status deployment/api --timeout=120s"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} set image deployment/scratch-api-test scratch-api-test=kolsdej/scratch-api-test:${TAG}"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout status deployment/scratch-api-test --timeout=120s"
         echo "Deployed to ${map.environment}"
     }
         
@@ -135,6 +135,6 @@ def kubeDeploy(Map map) {
 
 def kubeRollback(Map map) {
     withCredentials([file(credentialsId: 'KUBECONFIG', variable: 'KUBECONFIG')]) {
-        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout undo deployment/api"
+        sh "kubectl --kubeconfig=${KUBECONFIG} --namespace=${map.environment} rollout undo deployment/scratch-api-test"
     }
 }
