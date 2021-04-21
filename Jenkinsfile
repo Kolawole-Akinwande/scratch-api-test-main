@@ -107,7 +107,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github_cred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh "git tag ${TAG}"
-//                     sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/wizeline/sre-wizeline-akinwande-kolawole.git ${TAG}"
+//                     sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/Kolawole-Akinwande/scratch-api-test-main.git ${TAG}"
                 }
                 kubeDeploy(environment: "${env.PRODUCTION}")
             }
